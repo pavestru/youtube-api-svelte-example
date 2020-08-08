@@ -6,9 +6,15 @@
   $: videos = sortVideos(videosObj);
 
   function sortVideos(vidObj) {
-    return Object.entries(vidObj).map(([key, item]) => item).sort((a, b) => {
-      return (a.snippet.publishedAt < b.snippet.publishedAt) ? 1 : ((a.snippet.publishedAt > b.snippet.publishedAt) ? -1 : 0);
-    });
+    return Object.entries(vidObj)
+      .map(([key, item]) => item)
+      .sort((a, b) => {
+        return a.snippet.publishedAt < b.snippet.publishedAt
+          ? 1
+          : a.snippet.publishedAt > b.snippet.publishedAt
+          ? -1
+          : 0;
+      });
   }
 
   async function fetchVideos() {
@@ -55,7 +61,9 @@
   {:else}
     {#each videos as { snippet: { resourceId, title, thumbnails } } (resourceId.videoId)}
       <div class="video">
-        <a href={`https://youtube.com/watch?v=${resourceId.videoId}`} target="_blank">
+        <a
+          href={`https://youtube.com/watch?v=${resourceId.videoId}`}
+          target="_blank">
           <img alt={title} src={thumbnails.medium.url} />
           <br />
           {title}
