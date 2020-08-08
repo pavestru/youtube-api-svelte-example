@@ -1,19 +1,31 @@
 <script>
-	import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
-  let videos = [];
+  let videosObj = {};
+
+  $: videos = sortVideos(videosObj);
+
+  function sortVideos(vidObj) {
+    return Object.entries(vidObj).map(([key, item]) => item).sort((a, b) => {
+      return (a.snippet.publishedAt < b.snippet.publishedAt) ? 1 : ((a.snippet.publishedAt > b.snippet.publishedAt) ? -1 : 0);
+    });
+  }
 
   async function fetchVideos() {
     const key = process.env.YOUTUBE_API_KEY;
-		const playlistId = process.env.PLAYLIST_ID;
+    const playlistId = process.env.PLAYLIST_ID;
     let pageToken = "";
 
     do {
-      const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${key}&playlistId=${playlistId}&part=snippet&pageToken=${pageToken}`;
+      const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${key}&maxResults=9&playlistId=${playlistId}&part=snippet&pageToken=${pageToken}`;
       const response = await fetch(url);
       const json = await response.json();
       pageToken = json.nextPageToken;
-      videos = [...videos, ...json.items];
+      const newItemsObj = {};
+      for (const item of json.items) {
+        newItemsObj[item.snippet.resourceId.videoId] = item;
+      }
+      videosObj = { ...videos, ...newItemsObj };
     } while (pageToken);
   }
 
@@ -27,7 +39,7 @@
   }
 
   .App__container .video {
-    width: 250px;
+    width: 230px;
     padding: 10px;
     text-align: center;
   }
@@ -43,7 +55,7 @@
   {:else}
     {#each videos as { snippet: { resourceId, title, thumbnails } } (resourceId.videoId)}
       <div class="video">
-        <a href={`https://youtube.com/watch?v=${resourceId.videoId}`}>
+        <a href={`https://youtube.com/watch?v=${resourceId.videoId}`} target="_blank">
           <img alt={title} src={thumbnails.medium.url} />
           <br />
           {title}
