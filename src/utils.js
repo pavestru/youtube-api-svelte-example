@@ -17,3 +17,24 @@ export function parseYTDuration(duration) {
     return `${minutes}:${seconds}`;
   }
 }
+
+export function filterTags(tags) {
+  if (!tags) {
+    return;
+  }
+  return tags.filter((t) => {
+    return !["yt:cc=on", "čeština", "slovenčina"].includes(t);
+  });
+}
+
+export function sortVideos(vidObj) {
+  return Object.entries(vidObj)
+    .map(([key, item]) => item)
+    .sort((a, b) => {
+      return a.snippet.publishedAt < b.snippet.publishedAt
+        ? 1
+        : a.snippet.publishedAt > b.snippet.publishedAt
+        ? -1
+        : 0;
+    });
+}

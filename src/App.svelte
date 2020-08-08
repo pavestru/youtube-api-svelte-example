@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  import { parseYTDuration } from "./utils.js";
+  import { parseYTDuration, filterTags, sortVideos } from "./utils.js";
 
   const THIRTY_ONE_DAYS_IN_MS = 31 * 24 * 3600 * 1000;
   const NOW = Date.now();
@@ -9,27 +9,6 @@
   let videosObj = {};
 
   $: videos = sortVideos(videosObj);
-
-  function sortVideos(vidObj) {
-    return Object.entries(vidObj)
-      .map(([key, item]) => item)
-      .sort((a, b) => {
-        return a.snippet.publishedAt < b.snippet.publishedAt
-          ? 1
-          : a.snippet.publishedAt > b.snippet.publishedAt
-          ? -1
-          : 0;
-      });
-  }
-
-  function filterTags(tags) {
-    if (!tags) {
-      return;
-    }
-    return tags.filter(t => {
-      return !["yt:cc=on", "čeština", "slovenčina"].includes(t);
-    });
-  }
 
   async function fetchVideos() {
     const key = process.env.YOUTUBE_API_KEY;
