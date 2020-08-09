@@ -13,6 +13,7 @@
     width: 230px;
     padding: 10px;
     margin-bottom: 20px;
+    box-sizing: content-box;
   }
 
   .video a {
@@ -46,11 +47,12 @@
   }
 
   .title {
-    padding: 3px;
+    padding: 5px 1px 1px 1px;
     text-align: left;
     color: #333;
-    font-size: 90%;
     font-weight: 600;
+    font-size: 16px;
+    line-height: 1.3;
   }
 
   .video a:hover .title {
@@ -58,6 +60,7 @@
   }
 
   .video img {
+    max-width: none;
     width: 100%;
     transition: width 700ms, margin 700ms;
   }
