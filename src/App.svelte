@@ -2,7 +2,12 @@
   import { onMount } from "svelte";
 
   import Video from "./Video.svelte";
-  import { parseYTDuration, filterTags, sortVideos } from "./utils.js";
+  import {
+    parseYTDuration,
+    filterTags,
+    sortVideos,
+    relativeTimeDifference
+  } from "./utils.js";
 
   const THIRTY_ONE_DAYS_IN_MS = 31 * 24 * 3600 * 1000;
   const NOW = Date.now();
@@ -38,8 +43,9 @@
         const id = item.id;
         item.duration = parseYTDuration(item.contentDetails.duration);
         item.tags = filterTags(item.snippet.tags);
-        item.isNew =
-          NOW - Date.parse(item.snippet.publishedAt) < THIRTY_ONE_DAYS_IN_MS;
+        const published = Date.parse(item.snippet.publishedAt);
+        item.isNew = NOW - published < THIRTY_ONE_DAYS_IN_MS;
+        item.ago = relativeTimeDifference(NOW, published);
         newItemsObj[id] = item;
       }
 
@@ -61,8 +67,8 @@
   {#if videos.length === 0}
     <div>Nahrávam...</div>
   {:else}
-    {#each videos as { id, duration, tags, isNew, snippet: { title, thumbnails } } (id)}
-      <Video {id} {duration} {tags} {isNew} {title} {thumbnails} />
+    {#each videos as { id, duration, tags, isNew, ago, snippet: { title, thumbnails } } (id)}
+      <Video {id} {duration} {tags} {isNew} {title} {thumbnails} {ago} />
     {/each}
   {/if}
 </div>

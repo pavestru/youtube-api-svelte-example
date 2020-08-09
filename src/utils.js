@@ -18,6 +18,42 @@ export function parseYTDuration(duration) {
   }
 }
 
+export function relativeTimeDifference(current, previous) {
+  var msPerMinute = 60 * 1000;
+  var msPerHour = msPerMinute * 60;
+  var msPerDay = msPerHour * 24;
+  var msPerMonth = msPerDay * 30;
+  var msPerYear = msPerDay * 365;
+
+  var elapsed = current - previous;
+
+  if (elapsed < msPerMinute) {
+    const number = Math.round(elapsed / 1000);
+    const tvar = number === 1 ? "sekundou" : "sekundami";
+    return `pred ${number} ${tvar}`;
+  } else if (elapsed < msPerHour) {
+    const number = Math.round(elapsed / msPerMinute);
+    const tvar = number === 1 ? "minútou" : "minútami";
+    return `pred ${number} ${tvar}`;
+  } else if (elapsed < msPerDay) {
+    const number = Math.round(elapsed / msPerHour);
+    const tvar = number === 1 ? "hodinou" : "hodinami";
+    return `pred ${number} ${tvar}`;
+  } else if (elapsed < msPerMonth) {
+    const number = Math.round(elapsed / msPerDay);
+    const tvar = number === 1 ? "dňom" : "dňami";
+    return `pred ${number} ${tvar}`;
+  } else if (elapsed < msPerYear) {
+    const number = Math.round(elapsed / msPerMonth);
+    const tvar = number === 1 ? "mesiacom" : "mesiacmi";
+    return `pred ${number} ${tvar}`;
+  } else {
+    const number = Math.round(elapsed / msPerYear);
+    const tvar = number === 1 ? "rokom" : "rokmi";
+    return `pred ${number} ${tvar}`;
+  }
+}
+
 export function filterTags(tags) {
   if (!tags) {
     return;

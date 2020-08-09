@@ -5,13 +5,13 @@
   export let isNew;
   export let title;
   export let thumbnails;
+  export let ago;
 </script>
 
 <style>
   .video {
     width: 230px;
     padding: 10px;
-    text-align: center;
     margin-bottom: 20px;
   }
 
@@ -83,6 +83,12 @@
   .new {
     background-color: black;
   }
+
+  .ago {
+    margin-top: 5px;
+    font-size: 80%;
+    color: #999;
+  }
 </style>
 
 <div class="video">
@@ -103,5 +109,6 @@
         {/each}
       </div>
     {/if}
+    <div class="ago">zverejnené {ago}</div>
   </a>
 </div>
