@@ -17,7 +17,6 @@
 
   .video a {
     display: block;
-    position: relative;
   }
 
   .video a:hover {
@@ -26,6 +25,8 @@
 
   .thumb {
     height: 129px;
+    overflow: hidden;
+    position: relative;
   }
 
   .duration {
@@ -52,8 +53,18 @@
     font-weight: 600;
   }
 
+  .video a:hover .title {
+    color: #777;
+  }
+
   .video img {
-    max-width: 100%;
+    width: 100%;
+    transition: width 700ms, margin 700ms;
+  }
+
+  .video a:hover img {
+    margin: -10%;
+    width: 120%;
   }
 
   .tags {
@@ -75,11 +86,11 @@
 </style>
 
 <div class="video">
-  <a class="thumb" href={`https://youtube.com/watch?v=${id}`} target="_blank">
-    <img alt={title} src={thumbnails.medium.url} />
-    <div class="duration">{duration}</div>
-  </a>
   <a href={`https://youtube.com/watch?v=${id}`} target="_blank">
+    <div class="thumb">
+      <img alt={title} src={thumbnails.medium.url} />
+      <div class="duration">{duration}</div>
+    </div>
     <div class="title">{title}</div>
     {#if tags}
       <div class="tags">

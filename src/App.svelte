@@ -17,7 +17,7 @@
     let pageToken = "";
 
     do {
-      const urlPlaylistItems = `https://www.googleapis.com/youtube/v3/playlistItems?key=${key}&maxResults=9&playlistId=${playlistId}&part=snippet&pageToken=${pageToken}`;
+      const urlPlaylistItems = `https://www.googleapis.com/youtube/v3/playlistItems?key=${key}&maxResults=21&playlistId=${playlistId}&part=snippet&pageToken=${pageToken}`;
       let response = await fetch(urlPlaylistItems);
       let json = await response.json();
 
